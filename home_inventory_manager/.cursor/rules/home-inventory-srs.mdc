@@ -1,0 +1,234 @@
+---
+description: Home Inventory Manager — product requirements, tech stack, and implementation standards from the SRS
+alwaysApply: true
+---
+
+# Home Inventory Manager — SRS Rules
+
+## Project Overview
+
+**App:** Home Inventory Manager  
+**Purpose:** Mobile app for tracking household assets, warranties, receipts, maintenance schedules, and insurance documents.  
+**Target users:** Homeowners, renters, families, property managers, small business owners.  
+**MVP timeline:** 2–3 months. Design for later commercial growth.
+
+## Core Objectives
+
+Every feature must support at least one of:
+
+- Digital inventory of household items
+- Warranty and purchase tracking
+- Receipt and insurance document storage
+- Reminders (warranty expiration, maintenance)
+- Fast search and asset location
+- Reports for insurance claims or home audits
+
+## Technology Stack (Required)
+
+| Layer | Technology |
+|-------|------------|
+| Mobile | Flutter |
+| State management | **bloc** (do not use GetX, Provider-only, or Riverpod unless explicitly approved) |
+| Backend | Firebase + Node.js (where server logic is needed) |
+| Database | Firebase Firestore + SQLite (local/offline) |
+| Storage | Firebase Storage |
+| Auth | Firebase Authentication (JWT-based sessions) |
+| Notifications | Firebase Cloud Messaging (FCM) |
+| AI (Premium) | OpenAI API, Google Vision API, Barcode Lookup API |
+
+## Architecture
+
+Follow **Clean Architecture** with strict layer separation:
+
+```
+lib/
+├── main.dart
+├── core/           # constants, theme, routing, errors, utils
+├── features/
+│   └── <feature>/
+│       ├── data/       # datasources, repositories, DTOs
+│       ├── domain/     # entities, repository interfaces, use cases
+│       └── presentation/  # bloc, pages, widgets
+└── shared/         # cross-feature widgets and services
+```
+
+- Use **repository pattern** for all data access (Firestore, SQLite, Storage, APIs).
+- Keep business logic in domain/use cases and blocs — not in widgets.
+- Use DTOs for API/Firestore serialization; map to domain entities in repositories.
+
+## User Roles
+
+| Role | Capabilities |
+|------|--------------|
+| **Standard User** | Full CRUD on own inventory, documents, reminders, reports |
+| **Family Member** (future) | View shared inventory; add/update items |
+| **Admin** (future) | User management, subscriptions, analytics |
+
+Implement role checks at repository/service layer, not only in UI.
+
+---
+
+## Functional Requirements
+
+### 4.1 Authentication
+
+- Email registration and login
+- Forgot password with email reset flow
+- Social login (Google/Apple as platform supports)
+- Biometric login (local auth wrapper over existing session)
+- **Acceptance:** Secure login; password reset emails deliver successfully
+
+### 4.2 Dashboard
+
+Display: total assets, active warranties, expiring warranties, maintenance reminders, recently added items.  
+**Performance:** Load within **3 seconds**.
+
+### 4.3 Asset Management
+
+**Required fields:** Item Name, Category  
+**Optional fields:** Brand, Model Number, Serial Number, Purchase Date, Purchase Price, Room Location, Description
+
+**Categories (enum):** Electronics, Furniture, Appliances, Jewelry, Tools, Vehicles, Office Equipment, Other
+
+**Operations:** Add, Edit, Delete, View Details, Duplicate Asset
+
+```dart
+// Asset model must include at minimum:
+// id, name, category, createdAt, updatedAt, userId
+// Optional: brand, modelNumber, serialNumber, purchaseDate, purchasePrice, room, description
+```
+
+### 4.4 Barcode Scanner
+
+- Scan barcode → lookup product database → auto-fill asset fields when found
+- **Acceptance:** Scan completes within **2 seconds**; auto-populate when data available
+
+### 4.5 Photo Management
+
+- Multiple images per asset; capture or upload
+- Compress images before upload
+- Store in Firebase Storage with local cache/SQLite metadata
+
+### 4.6 Warranty Management
+
+Store: start date, expiry date, provider, warranty documents.  
+**Notifications:** 90, 30, and 7 days before expiry (FCM + local scheduling fallback).
+
+### 4.7 Receipt Storage
+
+- Upload PDF, JPG, PNG
+- Store receipt number and purchase details
+- OCR (optional/premium): extract store name, purchase date, amount
+
+### 4.8 Maintenance Tracker
+
+- Recurring or one-time maintenance schedules (HVAC, vehicle, filters, etc.)
+- Push reminders before due date
+
+### 4.9 Insurance Vault
+
+- Store policies, coverage details, claim documents
+- Link assets to policies (many-to-many relationship)
+
+### 4.10 Search & Filter
+
+**Search:** asset name, category, brand, serial number  
+**Filters:** room, purchase year, warranty status, asset value  
+**Performance:** Results within **1 second**
+
+### 4.11 Reports
+
+| Report | Contents | Export |
+|--------|----------|--------|
+| Insurance Report | Asset details, photos, estimated value | PDF, Excel |
+| Home Asset Report | Total count, total value | PDF, Excel |
+
+### 4.12 Notifications
+
+Push notifications for: warranty expiration, maintenance due, document expiration.
+
+### 4.13 Cloud Backup
+
+Automatic backup, manual backup, and restore — sync Firestore + Storage with local SQLite cache.
+
+---
+
+## AI Features (Premium — gate behind subscription)
+
+| Feature | Behavior |
+|---------|----------|
+| AI Asset Recognition | Photo → identify product type, brand, category |
+| AI Value Estimation | Current market value and depreciation |
+| AI Receipt Reader | Extract store, product, price, purchase date |
+
+Do not block MVP core flows on AI; implement as optional premium modules.
+
+---
+
+## Non-Functional Requirements
+
+| Area | Target |
+|------|--------|
+| App startup | < 3 seconds |
+| Dashboard load | < 3 seconds |
+| Search | < 1 second |
+| Security | JWT auth, encrypted data at rest/transit, secure cloud storage, biometric login |
+| Scalability | 100,000+ users, millions of assets |
+| Availability | 99.9% uptime (Firebase SLA + graceful offline degradation) |
+
+**Offline-first:** Use SQLite for local cache; sync with Firestore when online.
+
+---
+
+## MVP Scope vs Future (Do Not Implement Unless Asked)
+
+**Future enhancements — out of MVP scope:**
+
+- Family sharing, asset lending tracker, smart home integration
+- QR code labels, voice assistant, web dashboard
+- Multi-language support, used-item marketplace
+
+---
+
+## Implementation Checklist
+
+Before marking a feature complete:
+
+- [ ] Matches SRS acceptance criteria and performance targets
+- [ ] Uses bloc + Clean Architecture folder structure
+- [ ] Repository pattern with Firestore/SQLite/Storage abstraction
+- [ ] Required asset fields validated; categories use enum
+- [ ] Images compressed before upload
+- [ ] Notifications scheduled for warranty/maintenance thresholds
+- [ ] Search/filter indexed for sub-1s response
+- [ ] No hardcoded secrets; use Firebase config and environment variables
+- [ ] Widget tests for complex UI; unit tests for blocs and use cases
+
+
+## 🎨 5. Theming and Styling Rules
+
+✅ Use **only these theme constants** from `lib/themes/themes.dart`:
+
+| Purpose     | Constant                      |
+|-------------|-------------------------------|
+| Colors      | `HimColors`                   |
+| Font Size   | `FontSizes`                   |
+| Padding     | `Dimensions`                  |
+| Spacing     | `Dimensions`                  |
+| Sizes       | `Dimensions`                  |
+| TextStyle   | `HimTextStyles`               |
+| Theme       | `HimTheme`                    |
+
+❌ **Do NOT hardcode** any colors, font sizes, spacing, or padding values.
+
+## 🌐 6. Localization
+
+- Keep `app_en.arb`and `app_es.arb` up to date with all new strings
+- Add new keys to `app_en.arb` and `app_es.arb` only — do not modify existing keys
+
+## 🧠 7. API Integration
+
+- Use Retrofit for API calls
+- Model API responses with data transfer objects (DTOs)
+- Handle data sources through repository pattern
+- Use proper error handling for API calls

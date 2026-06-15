@@ -1,30 +1,61 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:home_inventory_manager/features/auth/domain/entities/app_user.dart';
+import 'package:home_inventory_manager/features/auth/domain/repositories/auth_repository.dart';
+import 'package:home_inventory_manager/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:home_inventory_manager/features/auth/presentation/pages/login_page.dart';
+import 'package:home_inventory_manager/l10n/app_localizations.dart';
+import 'package:home_inventory_manager/themes/themes.dart';
 
-import 'package:home_inventory_manager/main.dart';
+class FakeAuthRepository implements AuthRepository {
+  @override
+  Future<AppUser> login({required String email, required String password}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AppUser> register({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phone,
+    required String password,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<AppUser?> getCurrentUser() async => null;
+
+  @override
+  Future<void> sendPasswordResetEmail(String email) async {}
+
+  @override
+  Future<void> signOut() async {}
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Login page renders welcome text', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: HimTheme().getTheme(),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: BlocProvider(
+          create: (_) => AuthBloc(authRepository: FakeAuthRepository()),
+          child: const LoginPage(),
+        ),
+      ),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Welcome back'), findsOneWidget);
+    expect(find.text('Sign in'), findsOneWidget);
   });
 }

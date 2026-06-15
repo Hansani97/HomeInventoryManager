@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "392873674558",
+    "project_id": "home-inventory-manager-4828a",
+    "storage_bucket": "home-inventory-manager-4828a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392873674558:android:bfe4917ea7e01d28bb0e6f",
+        "android_client_info": {
+          "package_name": "com.example.home_inventory_manager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC1rmfXBrGkGnsLxZPyoe1yK0smUf6lrc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
