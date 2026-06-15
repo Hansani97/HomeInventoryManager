@@ -223,8 +223,8 @@ Before marking a feature complete:
 
 ## 🌐 6. Localization
 
-- Keep `app_en.arb`and `app_es.arb` up to date with all new strings
-- Add new keys to `app_en.arb` and `app_es.arb` only — do not modify existing keys
+- Keep `assets/l10n/app_en.arb` and `assets/l10n/app_es.arb` up to date with all new strings
+- Add new keys to `assets/l10n/app_en.arb` and `assets/l10n/app_es.arb` only — do not modify existing keys
 
 ## 🧠 7. API Integration
 

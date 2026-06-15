@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_inventory_manager/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:home_inventory_manager/features/auth/presentation/widgets/auth_primary_button.dart';
-import 'package:home_inventory_manager/features/auth/presentation/widgets/auth_text_field.dart';
-import 'package:home_inventory_manager/features/auth/presentation/widgets/password_strength_indicator.dart';
-import 'package:home_inventory_manager/features/home/presentation/pages/home_page.dart';
-import 'package:home_inventory_manager/l10n/app_localizations.dart';
+import 'package:home_inventory_manager/bloc/auth_bloc.dart';
+import 'package:home_inventory_manager/Views/widgets/auth_primary_button.dart';
+import 'package:home_inventory_manager/Views/widgets/auth_text_field.dart';
+import 'package:home_inventory_manager/Views/widgets/password_strength_indicator.dart';
+import 'package:home_inventory_manager/Views/pages/home_page.dart';
+import 'package:home_inventory_manager/generated/l10n/app_localizations.dart';
 import 'package:home_inventory_manager/themes/themes.dart';
 
 class RegisterPage extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:home_inventory_manager/core/errors/auth_failure.dart';
-import 'package:home_inventory_manager/features/auth/data/models/user_dto.dart';
+import 'package:home_inventory_manager/data/models/user_dto.dart';
 import 'package:home_inventory_manager/features/auth/domain/entities/app_user.dart';
 
 class AuthRemoteDataSource {
@@ -13,6 +13,8 @@ class AuthRemoteDataSource {
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
+
+  String? get currentUserId => _auth.currentUser?.uid;
 
   Future<AppUser> register({
     required String firstName,

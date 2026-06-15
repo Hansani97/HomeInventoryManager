@@ -81,7 +81,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneNumber => 'Phone number';
 
   @override
-  String get phoneHint => '+1 (555) 000-0000';
+  String get phoneHint => '0700000000';
 
   @override
   String get confirmPassword => 'Confirm password';

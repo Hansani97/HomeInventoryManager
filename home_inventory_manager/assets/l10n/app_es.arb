@@ -24,7 +24,7 @@
   "lastName": "Apellido",
   "lastNameHint": "Kim",
   "phoneNumber": "Número de teléfono",
-  "phoneHint": "+1 (555) 000-0000",
+  "phoneHint": "0700000000",
   "confirmPassword": "Confirmar contraseña",
   "termsPrefix": "Acepto los ",
   "termsOfService": "Términos de Servicio",

@@ -245,7 +245,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneHint.
   ///
   /// In en, this message translates to:
-  /// **'+1 (555) 000-0000'**
+  /// **'0700000000'**
   String get phoneHint;
 
   /// No description provided for @confirmPassword.

@@ -35,6 +35,42 @@ class UserDto {
     );
   }
 
+  factory UserDto.fromEntity(AppUser entity) {
+    return UserDto(
+      id: entity.id,
+      email: entity.email,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      phone: entity.phone,
+      createdAt: entity.createdAt,
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  factory UserDto.fromMap(Map<String, dynamic> map) {
+    return UserDto(
+      id: map['id'] as String,
+      email: map['email'] as String,
+      firstName: map['first_name'] as String,
+      lastName: map['last_name'] as String,
+      phone: map['phone'] as String?,
+      createdAt: DateTime.parse(map['created_at'] as String),
+      updatedAt: DateTime.parse(map['updated_at'] as String),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'email': email,
+      'first_name': firstName,
+      'last_name': lastName,
+      'phone': phone,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
+    };
+  }
+
   Map<String, dynamic> toFirestore() {
     return {
       'email': email,

@@ -4,9 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_inventory_manager/features/auth/domain/entities/app_user.dart';
 import 'package:home_inventory_manager/features/auth/domain/repositories/auth_repository.dart';
-import 'package:home_inventory_manager/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:home_inventory_manager/features/auth/presentation/pages/login_page.dart';
-import 'package:home_inventory_manager/l10n/app_localizations.dart';
+import 'package:home_inventory_manager/bloc/auth_bloc.dart';
+import 'package:home_inventory_manager/Views/pages/login_page.dart';
+import 'package:home_inventory_manager/generated/l10n/app_localizations.dart';
 import 'package:home_inventory_manager/themes/themes.dart';
 
 class FakeAuthRepository implements AuthRepository {

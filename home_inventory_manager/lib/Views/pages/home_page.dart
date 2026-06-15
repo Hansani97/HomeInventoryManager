@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_inventory_manager/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:home_inventory_manager/features/auth/presentation/pages/login_page.dart';
-import 'package:home_inventory_manager/l10n/app_localizations.dart';
+import 'package:home_inventory_manager/bloc/auth_bloc.dart';
+import 'package:home_inventory_manager/Views/pages/login_page.dart';
+import 'package:home_inventory_manager/generated/l10n/app_localizations.dart';
 import 'package:home_inventory_manager/themes/themes.dart';
 
 class HomePage extends StatelessWidget {

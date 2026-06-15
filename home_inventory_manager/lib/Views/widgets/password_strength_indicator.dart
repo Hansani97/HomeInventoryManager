@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_inventory_manager/l10n/app_localizations.dart';
+import 'package:home_inventory_manager/generated/l10n/app_localizations.dart';
 import 'package:home_inventory_manager/themes/themes.dart';
 
 enum PasswordStrength { none, weak, fair, good, strong }
